@@ -6,95 +6,172 @@
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#D4AF37">
     <title>Per Te Market</title>
+    <!-- Libreria per Barcode EAN-13 -->
+    <script src="https://cdn.jsdelivr.net"></script>
     <style>
-        :root { --primary: #0F172A; --secondary: #D4AF37; --accent: #F8FAFC; }
-        body, html { margin: 0; padding: 0; background: var(--primary); font-family: 'Segoe UI', sans-serif; color: var(--accent); overflow-x: hidden; }
+        :root { --primary: #0F172A; --secondary: #D4AF37; --accent: #F8FAFC; --gold-dark: #B59410; }
+        body, html { margin: 0; padding: 0; background: var(--primary); font-family: 'Segoe UI', sans-serif; color: var(--accent); overflow: hidden; height: 100%; }
 
-        /* 1. Splash Screen */
+        /* --- 1. SPLASH SCREEN --- */
         #splash {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: var(--primary); display: flex; flex-direction: column;
-            justify-content: center; align-items: center; z-index: 9999;
+            justify-content: center; align-items: center; z-index: 10000;
             transition: opacity 0.5s ease;
         }
-        .logo-anim { width: 80px; height: 80px; border: 3px solid var(--secondary); border-radius: 20px; animation: pulse 1.5s infinite; }
-        @keyframes pulse { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.1); opacity: 0.7; } 100% { transform: scale(1); opacity: 1; } }
+        .logo-ptm { width: 100px; height: 100px; border: 2px solid var(--secondary); border-radius: 25%; display: flex; align-items: center; justify-content: center; animation: pulse 2s infinite; box-shadow: 0 0 20px rgba(212, 175, 55, 0.2); }
+        .logo-ptm::after { content: "PT"; font-weight: bold; font-size: 40px; color: var(--secondary); }
+        @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.05); opacity: 0.8; } }
 
-        /* 2. Login Glassmorphism */
-        #login-page { padding: 40px 20px; text-align: center; display: none; }
-        .glass-card { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border-radius: 30px; padding: 30px; border: 1px solid rgba(212, 175, 55, 0.2); }
-        input { width: 100%; padding: 15px; margin: 10px 0; background: #1e293b; border: 1px solid var(--secondary); border-radius: 10px; color: white; box-sizing: border-box; }
-        .btn-gold { background: var(--secondary); color: var(--primary); border: none; padding: 15px; width: 100%; border-radius: 50px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        /* --- 2. LOGIN PAGE --- */
+        #login-page { position: relative; height: 100vh; display: none; flex-direction: column; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; }
+        .glass-box { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(15px); border-radius: 30px; padding: 40px 25px; border: 1px solid rgba(212, 175, 55, 0.15); width: 100%; max-width: 350px; text-align: center; }
+        input { width: 100%; padding: 15px; margin: 10px 0; background: #1e293b; border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 12px; color: white; box-sizing: border-box; outline: none; }
+        input:focus { border-color: var(--secondary); box-shadow: 0 0 10px rgba(212, 175, 55, 0.2); }
+        .btn-gold { background: var(--secondary); color: var(--primary); border: none; padding: 16px; width: 100%; border-radius: 50px; font-weight: bold; cursor: pointer; margin-top: 15px; letter-spacing: 1px; }
 
-        /* 3. Dashboard */
-        #main-app { display: none; padding: 20px; padding-bottom: 100px; }
-        .fidelity-card { background: linear-gradient(135deg, #1e293b, #0F172A); border: 1px solid var(--secondary); border-radius: 20px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); position: relative; }
-        .points-badge { font-size: 2.5rem; color: var(--secondary); font-weight: bold; }
+        /* --- 3. DASHBOARD --- */
+        #main-app { display: none; padding: 20px; height: 100vh; overflow-y: auto; padding-bottom: 100px; }
+        .header-ptm { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+        
+        .fidelity-card { background: linear-gradient(135deg, #1e293b 0%, #0F172A 100%); border: 1px solid var(--secondary); border-radius: 25px; padding: 25px; box-shadow: 0 15px 35px rgba(0,0,0,0.6); position: relative; cursor: pointer; overflow: hidden; }
+        .fidelity-card::before { content: ""; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(45deg, transparent, rgba(255,255,255,0.03), transparent); transform: rotate(45deg); pointer-events: none; }
+        
+        .card-label { font-size: 11px; color: var(--secondary); letter-spacing: 2px; font-weight: bold; }
+        .points-display { text-align: center; margin: 30px 0; }
+        .points-val { font-size: 3.5rem; color: var(--secondary); font-weight: 800; text-shadow: 0 0 15px rgba(212, 175, 55, 0.3); }
 
-        /* Bottom Nav */
-        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; height: 70px; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(10px); border-top: 1px solid var(--secondary); display: flex; justify-content: space-around; align-items: center; }
-        .nav-item { color: #64748b; font-size: 10px; text-decoration: none; text-align: center; }
-        .nav-item.active { color: var(--secondary); }
+        /* --- 4. BARCODE OVERLAY --- */
+        #barcode-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 20000; display: none; flex-direction: column; justify-content: center; align-items: center; color: black; }
+        #ean-svg { width: 80%; max-height: 250px; }
+
+        /* --- 5. BOTTOM NAV --- */
+        .nav-bar { position: fixed; bottom: 0; left: 0; width: 100%; height: 75px; background: rgba(15, 23, 42, 0.98); backdrop-filter: blur(10px); border-top: 1px solid rgba(212, 175, 55, 0.3); display: flex; justify-content: space-around; align-items: center; }
+        .nav-btn { color: #64748b; font-size: 10px; display: flex; flex-direction: column; align-items: center; text-decoration: none; }
+        .nav-btn.active { color: var(--secondary); }
+        .center-btn { width: 60px; height: 60px; background: var(--secondary); border-radius: 50%; margin-top: -40px; border: 5px solid var(--primary); display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4); }
     </style>
 </head>
 <body>
 
-    <!-- Splash Screen -->
     <div id="splash">
-        <div class="logo-anim"></div>
-        <h2 style="color: var(--secondary); letter-spacing: 3px; margin-top: 20px;">PER TE MARKET</h2>
+        <div class="logo-ptm"></div>
+        <h3 style="margin-top: 25px; letter-spacing: 4px; color: var(--secondary);">PER TE MARKET</h3>
+        <div style="font-size: 10px; color: var(--accent); opacity: 0.5; margin-top: 5px;">CARICAMENTO CAVEAU...</div>
     </div>
 
-    <!-- Login -->
     <div id="login-page">
-        <div class="glass-card">
-            <h1 style="color: var(--secondary);">Benvenuto</h1>
-            <p style="font-size: 0.8rem; opacity: 0.7;">Inserisci le tue credenziali per accedere alla tua Carta Per Te.</p>
+        <div class="glass-box">
+            <h2 style="color: var(--secondary); margin-bottom: 5px;">Accesso Clienti</h2>
+            <p style="font-size: 13px; opacity: 0.6; margin-bottom: 25px;">Gestisci la tua Carta Per Te</p>
             <input type="text" id="user" placeholder="User ID">
             <input type="password" id="pass" placeholder="Password">
-            <button class="btn-gold" onclick="tentaLogin()">ACCEDI</button>
+            <button class="btn-gold" onclick="tentaLogin()">ENTRA NEL CAVEAU</button>
         </div>
     </div>
 
-    <!-- Dashboard -->
     <div id="main-app">
-        <div class="fidelity-card">
-            <div style="font-size: 0.7rem; color: var(--secondary);">CARTA PER TE</div>
-            <div style="margin-top: 40px; text-align: center;">
-                <div style="font-size: 0.7rem; opacity: 0.6;">IL TUO SALDO PUNTI</div>
-                <div class="points-badge" id="display-punti">0</div>
+        <div class="header-ptm">
+            <span style="font-weight: bold; letter-spacing: 1px;">CIAO, <span id="user-name">CLIENTE</span></span>
+            <div style="color: var(--secondary);">🔔</div>
+        </div>
+
+        <div class="fidelity-card" onclick="mostraBarcode()">
+            <div class="card-label">CARTA PER TE</div>
+            <div class="points-display">
+                <div style="font-size: 10px; opacity: 0.6; letter-spacing: 1px;">IL TUO SALDO PUNTI</div>
+                <div class="points-val" id="display-punti">0</div>
+            </div>
+            <div style="font-size: 10px; opacity: 0.8; text-align: right;" id="display-id">ID: 8000000000000</div>
+        </div>
+
+        <div style="margin-top: 30px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+            <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 15px; border-left: 3px solid var(--secondary);">
+                <div style="font-size: 10px; color: var(--secondary);">MONETE</div>
+                <div style="font-size: 20px; font-weight: bold;" id="display-monete">0</div>
+            </div>
+            <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 15px; border-left: 3px solid var(--secondary);">
+                <div style="font-size: 10px; color: var(--secondary);">RISPARMIO</div>
+                <div style="font-size: 20px; font-weight: bold;">€ 0,00</div>
             </div>
         </div>
     </div>
 
-    <!-- Bottom Nav -->
-    <div class="bottom-nav">
-        <div class="nav-item active">🏠<br>HOME</div>
-        <div class="nav-item">🎁<br>PREMI</div>
-        <div class="nav-item" style="color: var(--secondary); font-size: 20px;">💳</div>
-        <div class="nav-item">🛒<br>SPESA</div>
-        <div class="nav-item">👤<br>PROFILO</div>
+    <div id="barcode-overlay" onclick="chiudiBarcode()">
+        <p style="font-weight: bold; margin-bottom: 30px; letter-spacing: 2px;">SCANSIONA IN CASSA</p>
+        <svg id="ean-svg"></svg>
+        <p style="font-size: 12px; color: #999; margin-top: 30px;">Tocca per chiudere</p>
+    </div>
+
+    <div class="nav-bar">
+        <div class="nav-btn active">🏠<br>HOME</div>
+        <div class="nav-btn">🎁<br>PREMI</div>
+        <div class="nav-btn center-btn" onclick="mostraBarcode()" style="font-size: 25px;">💳</div>
+        <div class="nav-btn">🛒<br>LISTA</div>
+        <div class="nav-btn">👤<br>PROFILO</div>
     </div>
 
     <script>
-        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwMgKbps8Df21dUXSZ_88OobYaYr-SvSjsfJuCZP1ufmKu5DcJ7TW7_yB2jmV5VHt8M3A/exec"; // <--- IMPORTANTE
+        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwMgKbps8Df21dUXSZ_88OobYaYr-SvSjsfJuCZP1ufmKu5DcJ7TW7_yB2jmV5VHt8M3A/exec"; 
+        let datiCorrenti = null;
 
         window.onload = () => {
             setTimeout(() => {
                 document.getElementById('splash').style.opacity = '0';
                 setTimeout(() => {
                     document.getElementById('splash').style.display = 'none';
-                    document.getElementById('login-page').style.display = 'block';
+                    document.getElementById('login-page').style.display = 'flex';
                 }, 500);
-            }, 1500);
+            }, 2000);
         };
 
         function tentaLogin() {
-            // Qui inseriremo la chiamata fetch al database Google
-            alert("Tentativo di accesso inviato al Caveau...");
-            // Per ora simuliamo l'accesso
-            document.getElementById('login-page').style.display = 'none';
-            document.getElementById('main-app').style.display = 'block';
+            const user = document.getElementById('user').value;
+            const pass = document.getElementById('pass').value;
+            if(!user || !pass) return alert("Inserisci credenziali");
+
+            document.getElementById('splash').style.display = 'flex';
+            document.getElementById('splash').style.opacity = '1';
+
+            fetch(`${WEB_APP_URL}?action=login&user=${encodeURIComponent(user)}&pass=${encodeURIComponent(pass)}`)
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('splash').style.opacity = '0';
+                setTimeout(() => document.getElementById('splash').style.display = 'none', 500);
+                
+                if(data.status === "SUCCESS") {
+                    datiCorrenti = data;
+                    document.getElementById('login-page').style.display = 'none';
+                    document.getElementById('main-app').style.display = 'block';
+                    document.getElementById('user-name').innerText = data.nome.toUpperCase();
+                    document.getElementById('display-punti').innerText = data.punti;
+                    document.getElementById('display-monete').innerText = data.monete;
+                    document.getElementById('display-id').innerText = "ID: " + data.idCarta;
+                } else {
+                    alert("ERRORE: " + data.message);
+                }
+            })
+            .catch(() => {
+                document.getElementById('splash').style.display = 'none';
+                alert("Errore di connessione al Caveau.");
+            });
+        }
+
+        function mostraBarcode() {
+            if(!datiCorrenti) return;
+            const overlay = document.getElementById('barcode-overlay');
+            overlay.style.display = 'flex';
+            JsBarcode("#ean-svg", datiCorrenti.idCarta, {
+                format: "EAN13",
+                lineColor: "#000",
+                width: 3,
+                height: 100,
+                displayValue: true
+            });
+        }
+
+        function chiudiBarcode() {
+            document.getElementById('barcode-overlay').style.display = 'none';
         }
     </script>
 </body>
