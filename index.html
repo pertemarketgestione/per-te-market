@@ -1,12 +1,101 @@
-{
-  "name": "Per Te Market",
-  "short_name": "Per Te",
-  "start_url": "/index.html",
-  "display": "standalone",
-  "background_color": "#0F172A",
-  "theme_color": "#D4AF37",
-  "icons": [
-    { "src": "icon-192.png", "type": "image/png", "sizes": "192x192" },
-    { "src": "icon-512.png", "type": "image/png", "sizes": "512x512" }
-  ]
-}
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#D4AF37">
+    <title>Per Te Market</title>
+    <style>
+        :root { --primary: #0F172A; --secondary: #D4AF37; --accent: #F8FAFC; }
+        body, html { margin: 0; padding: 0; background: var(--primary); font-family: 'Segoe UI', sans-serif; color: var(--accent); overflow-x: hidden; }
+
+        /* 1. Splash Screen */
+        #splash {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--primary); display: flex; flex-direction: column;
+            justify-content: center; align-items: center; z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+        .logo-anim { width: 80px; height: 80px; border: 3px solid var(--secondary); border-radius: 20px; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.1); opacity: 0.7; } 100% { transform: scale(1); opacity: 1; } }
+
+        /* 2. Login Glassmorphism */
+        #login-page { padding: 40px 20px; text-align: center; display: none; }
+        .glass-card { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border-radius: 30px; padding: 30px; border: 1px solid rgba(212, 175, 55, 0.2); }
+        input { width: 100%; padding: 15px; margin: 10px 0; background: #1e293b; border: 1px solid var(--secondary); border-radius: 10px; color: white; box-sizing: border-box; }
+        .btn-gold { background: var(--secondary); color: var(--primary); border: none; padding: 15px; width: 100%; border-radius: 50px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+
+        /* 3. Dashboard */
+        #main-app { display: none; padding: 20px; padding-bottom: 100px; }
+        .fidelity-card { background: linear-gradient(135deg, #1e293b, #0F172A); border: 1px solid var(--secondary); border-radius: 20px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); position: relative; }
+        .points-badge { font-size: 2.5rem; color: var(--secondary); font-weight: bold; }
+
+        /* Bottom Nav */
+        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; height: 70px; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(10px); border-top: 1px solid var(--secondary); display: flex; justify-content: space-around; align-items: center; }
+        .nav-item { color: #64748b; font-size: 10px; text-decoration: none; text-align: center; }
+        .nav-item.active { color: var(--secondary); }
+    </style>
+</head>
+<body>
+
+    <!-- Splash Screen -->
+    <div id="splash">
+        <div class="logo-anim"></div>
+        <h2 style="color: var(--secondary); letter-spacing: 3px; margin-top: 20px;">PER TE MARKET</h2>
+    </div>
+
+    <!-- Login -->
+    <div id="login-page">
+        <div class="glass-card">
+            <h1 style="color: var(--secondary);">Benvenuto</h1>
+            <p style="font-size: 0.8rem; opacity: 0.7;">Inserisci le tue credenziali per accedere alla tua Carta Per Te.</p>
+            <input type="text" id="user" placeholder="User ID">
+            <input type="password" id="pass" placeholder="Password">
+            <button class="btn-gold" onclick="tentaLogin()">ACCEDI</button>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div id="main-app">
+        <div class="fidelity-card">
+            <div style="font-size: 0.7rem; color: var(--secondary);">CARTA PER TE</div>
+            <div style="margin-top: 40px; text-align: center;">
+                <div style="font-size: 0.7rem; opacity: 0.6;">IL TUO SALDO PUNTI</div>
+                <div class="points-badge" id="display-punti">0</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Nav -->
+    <div class="bottom-nav">
+        <div class="nav-item active">🏠<br>HOME</div>
+        <div class="nav-item">🎁<br>PREMI</div>
+        <div class="nav-item" style="color: var(--secondary); font-size: 20px;">💳</div>
+        <div class="nav-item">🛒<br>SPESA</div>
+        <div class="nav-item">👤<br>PROFILO</div>
+    </div>
+
+    <script>
+        const WEB_APP_URL = "INSERISCI_QUI_URL_DELLA_TUA_WEB_APP"; // <--- IMPORTANTE
+
+        window.onload = () => {
+            setTimeout(() => {
+                document.getElementById('splash').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('splash').style.display = 'none';
+                    document.getElementById('login-page').style.display = 'block';
+                }, 500);
+            }, 1500);
+        };
+
+        function tentaLogin() {
+            // Qui inseriremo la chiamata fetch al database Google
+            alert("Tentativo di accesso inviato al Caveau...");
+            // Per ora simuliamo l'accesso
+            document.getElementById('login-page').style.display = 'none';
+            document.getElementById('main-app').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
