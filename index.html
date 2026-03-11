@@ -5,129 +5,108 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#D4AF37">
-    <title>Per Te Market - Admin AI</title>
-    <script src="https://cdn.jsdelivr.net"></script>
-    <style>
+    <title>PTM - AI COMMAND CENTER</title>
+    <style id="ai-dynamic-css">
         :root { --primary: #0F172A; --secondary: #D4AF37; --accent: #F8FAFC; }
-        body, html { margin: 0; padding: 0; background: var(--primary); font-family: 'Segoe UI', sans-serif; color: var(--accent); overflow-x: hidden; height: 100%; }
-
-        /* --- STILE ICONE --- */
-        .nav-btn svg { width: 24px; height: 24px; fill: #64748b; transition: 0.3s; margin-bottom: 4px; }
-        .nav-btn.active svg { fill: var(--secondary); }
-        .center-btn svg { fill: var(--primary) !important; width: 30px; height: 30px; }
-
-        /* --- UI COMPONENTS --- */
-        #splash { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--primary); display: flex; justify-content: center; align-items: center; z-index: 10000; transition: 0.5s; }
-        .logo-ptm { width: 80px; height: 80px; border: 2px solid var(--secondary); border-radius: 20px; animation: pulse 2s infinite; }
+        body, html { margin: 0; padding: 0; background: var(--primary); font-family: 'Segoe UI', sans-serif; color: var(--accent); overflow-x: hidden; }
+        
+        #splash { position: fixed; top:0; left:0; width:100%; height:100%; background: var(--primary); display: flex; justify-content: center; align-items: center; z-index: 10000; }
+        .logo { width: 80px; height: 80px; border: 2px solid var(--secondary); border-radius: 20px; animation: pulse 2s infinite; }
         @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
-        
-        #login-page { height: 100vh; display: none; flex-direction: column; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; }
-        .glass-box { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(15px); border-radius: 30px; padding: 30px; border: 1px solid rgba(212, 175, 55, 0.15); width: 100%; max-width: 350px; text-align: center; }
-        input, select { width: 100%; padding: 12px; margin: 8px 0; background: #1e293b; border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 10px; color: white; box-sizing: border-box; font-size: 14px; }
-        .btn-gold { background: var(--secondary); color: var(--primary); border: none; padding: 14px; width: 100%; border-radius: 50px; font-weight: bold; cursor: pointer; margin-top: 10px; }
 
-        #main-app { display: none; padding: 20px; height: 100vh; overflow-y: auto; padding-bottom: 120px; box-sizing: border-box; }
-        .fidelity-card { background: linear-gradient(135deg, #1e293b, #0F172A); border: 1px solid var(--secondary); border-radius: 25px; padding: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.6); margin-bottom: 20px; }
-        
-        /* --- AI CHAT INTERFACE --- */
-        .ai-panel { background: rgba(255,255,255,0.05); border-radius: 20px; border: 1px solid var(--secondary); padding: 15px; margin-top: 20px; }
-        .chat-box { height: 180px; overflow-y: auto; background: rgba(0,0,0,0.2); border-radius: 10px; padding: 10px; font-size: 13px; margin-bottom: 10px; border: 1px solid rgba(255,255,255,0.1); }
-        .msg-ia { color: var(--secondary); margin-bottom: 8px; }
-        .msg-me { color: white; text-align: right; margin-bottom: 8px; font-style: italic; }
+        #login-page { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; }
+        .glass { background: rgba(255,255,255,0.03); backdrop-filter: blur(15px); border-radius: 25px; padding: 30px; border: 1px solid rgba(212,175,55,0.2); width: 100%; max-width: 350px; text-align: center; }
+        input { width: 100%; padding: 12px; margin: 10px 0; background: #1e293b; border: 1px solid rgba(212,175,55,0.3); border-radius: 10px; color: white; box-sizing: border-box; }
+        .btn { background: var(--secondary); color: var(--primary); border: none; padding: 15px; width: 100%; border-radius: 50px; font-weight: bold; cursor: pointer; }
 
-        .nav-bar { position: fixed; bottom: 0; left: 0; width: 100%; height: 75px; background: rgba(15, 23, 42, 0.98); border-top: 1px solid rgba(212, 175, 55, 0.3); display: flex; justify-content: space-around; align-items: center; z-index: 5000; }
-        .nav-btn { color: #64748b; font-size: 10px; display: flex; flex-direction: column; align-items: center; cursor: pointer; background: none; border: none; }
-        .nav-btn.active { color: var(--secondary); }
+        #main-app { display: none; padding: 20px; padding-bottom: 100px; }
+        .ai-terminal { background: #000; color: #10b981; font-family: monospace; padding: 15px; border-radius: 15px; border: 1px solid var(--secondary); font-size: 12px; height: 150px; overflow-y: auto; margin-bottom: 20px; }
     </style>
 </head>
 <body>
 
-    <div id="splash"><div class="logo-ptm"></div></div>
+    <div id="splash"><div class="logo"></div></div>
 
     <div id="login-page">
-        <div class="glass-box">
-            <h2 style="color: var(--secondary);">Area Admin</h2>
+        <div class="glass">
+            <h2 style="color:var(--secondary)">AI COMMAND</h2>
             <input type="text" id="user" placeholder="User ID">
             <input type="password" id="pass" placeholder="Password">
-            <button class="btn-gold" onclick="tentaLogin()">ACCEDI AL CAVEAU</button>
+            <button class="btn" onclick="tentaLogin()">ACCEDI</button>
         </div>
     </div>
 
     <div id="main-app">
-        <div class="fidelity-card">
-            <div style="font-size: 11px; color: var(--secondary); letter-spacing: 2px;">STATO SISTEMA ADMIN</div>
-            <div style="font-size: 24px; font-weight: bold; margin-top: 10px;">Benvenuto, Regia</div>
+        <h3 style="color:var(--secondary)">🧠 IA STRATEGICA & CODER</h3>
+        <div class="ai-terminal" id="terminal">System Ready. In attesa di istruzioni...</div>
+        
+        <textarea id="ai-prompt" placeholder="Es: Cambia lo sfondo in blu notte e i testi in oro" style="width:100%; height:80px; background:#1e293b; color:white; border-radius:10px; border:1px solid var(--secondary); padding:10px; box-sizing:border-box;"></textarea>
+        
+        <button class="btn" style="margin-top:10px;" onclick="chiediAI()">ESEGUI MODIFICA</button>
+        
+        <div id="apply-zone" style="display:none; margin-top:20px; border-top: 1px solid var(--secondary); padding-top:20px;">
+            <p style="color:#10b981; font-size:12px;">✨ Nuovo codice generato con successo.</p>
+            <button class="btn" onclick="applicaCodice()">APPLICA MODIFICHE ORA</button>
         </div>
 
-        <!-- ⚙️ CONFIGURAZIONE IA -->
-        <div class="ai-panel">
-            <h4 style="color: var(--secondary); margin: 0 0 10px 0;">⚙️ CONFIGURAZIONE IA</h4>
-            <select id="ai-provider">
-                <option value="Google">Google (Gemini)</option>
-            </select>
-            <input type="text" id="ai-model-input" placeholder="Modello (es: AUTO o gemini-1.5-flash)">
-            <input type="password" id="ai-key-input" placeholder="Incolla API Key qui">
-            <button class="btn-gold" style="padding: 10px;" onclick="salvaAI()">AGGIORNA CONFIGURAZIONE</button>
-        </div>
-
-        <!-- 🧠 CHAT IA -->
-        <div class="ai-panel">
-            <h4 style="color: var(--secondary); margin: 0 0 10px 0;">🧠 AI MODE STRATEGICO</h4>
-            <div class="chat-box" id="chat-output">Benvenuto Admin. Configura la chiave per iniziare.</div>
-            <div style="display:flex; gap:5px;">
-                <input type="text" id="chat-query" placeholder="Chiedi strategia..." style="margin:0;">
-                <button class="btn-gold" style="width:50px; margin:0; padding:0;" onclick="chiediAI()">➤</button>
-            </div>
+        <div style="margin-top:30px; border: 1px solid var(--secondary); padding:15px; border-radius:15px;">
+            <h4 style="color:var(--secondary); margin:0 0 10px 0;">⚙️ CONFIG IA</h4>
+            <input type="password" id="ai-key" placeholder="Incolla API KEY Gemini">
+            <button class="btn" style="padding:5px;" onclick="salvaKey()">AGGIORNA CHIAVE</button>
         </div>
     </div>
 
-    <nav class="nav-bar">
-        <button class="nav-btn active"><svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg><span>HOME</span></button>
-        <button class="nav-btn"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.33-8 4v2h16v-2c0-2.67-5.33-4-8-4z"/></svg><span>UTENTI</span></button>
-        <button class="nav-btn"><svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg><span>CONFIG</span></button>
-    </nav>
-
     <script>
-        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwMgKbps8Df21dUXSZ_88OobYaYr-SvSjsfJuCZP1ufmKu5DcJ7TW7_yB2jmV5VHt8M3A/exec";
+        const WEB_APP_URL = "IL_TUO_URL_EXEC"; 
+        let cacheCodice = { css: "", js: "" };
 
-        window.onload = () => {
-            setTimeout(() => { document.getElementById('splash').style.display = 'none'; document.getElementById('login-page').style.display = 'flex'; }, 1500);
-        };
+        window.onload = () => { setTimeout(() => document.getElementById('splash').style.display='none', 1500); };
 
         function tentaLogin() {
-            const user = document.getElementById('user').value;
-            const pass = document.getElementById('pass').value;
-            fetch(`${WEB_APP_URL}?action=login&user=${encodeURIComponent(user)}&pass=${encodeURIComponent(pass)}`)
-            .then(res => res.json()).then(data => {
-                if(data.status === "SUCCESS") {
-                    document.getElementById('login-page').style.display = 'none';
-                    document.getElementById('main-app').style.display = 'block';
-                } else { alert(data.message); }
+            const u = document.getElementById('user').value;
+            const p = document.getElementById('pass').value;
+            fetch(`${WEB_APP_URL}?action=login&user=${u}&pass=${p}`)
+            .then(r => r.json()).then(d => {
+                if(d.status === "SUCCESS") {
+                    document.getElementById('login-page').style.display='none';
+                    document.getElementById('main-app').style.display='block';
+                } else { alert("Accesso Negato"); }
             });
         }
 
-        function salvaAI() {
-            const dati = {
-                provider: document.getElementById('ai-provider').value,
-                model: document.getElementById('ai-model-input').value,
-                key: document.getElementById('ai-key-input').value
-            };
-            fetch(`${WEB_APP_URL}?action=updateAIConfig&data=${JSON.stringify(dati)}`)
-            .then(res => res.json()).then(res => alert(res.message));
+        function salvaKey() {
+            const k = document.getElementById('ai-key').value;
+            const d = JSON.stringify({ provider: "Google", model: "AUTO", key: k });
+            fetch(`${WEB_APP_URL}?action=updateAIConfig&data=${encodeURIComponent(d)}`)
+            .then(r => r.json()).then(res => alert(res.message));
         }
 
         function chiediAI() {
-            const query = document.getElementById('chat-query').value;
-            const out = document.getElementById('chat-output');
-            if(!query) return;
-            out.innerHTML += `<div class="msg-me">IO: ${query}</div>`;
-            document.getElementById('chat-query').value = "";
-
-            fetch(`${WEB_APP_URL}?action=askAI&prompt=${encodeURIComponent(query)}`)
-            .then(res => res.json()).then(data => {
-                out.innerHTML += `<div class="msg-ia">IA: ${data.risposta}</div>`;
-                out.scrollTop = out.scrollHeight;
+            const p = document.getElementById('ai-prompt').value;
+            const term = document.getElementById('terminal');
+            term.innerHTML += `<br>> Richiesta: ${p}...`;
+            
+            fetch(`${WEB_APP_URL}?action=askAI&prompt=${encodeURIComponent(p)}`)
+            .then(r => r.json()).then(d => {
+                const parti = d.risposta.split('|');
+                cacheCodice.css = parti[0] || "";
+                cacheCodice.js = parti[1] || "";
+                term.innerHTML += `<br>> Risposta ricevuta. Codice generato.`;
+                document.getElementById('apply-zone').style.display='block';
             });
+        }
+
+        function applicaCodice() {
+            // Applica CSS
+            const style = document.createElement('style');
+            style.innerHTML = cacheCodice.css;
+            document.head.appendChild(style);
+            // Applica JS
+            try { eval(cacheCodice.js); } catch(e) { console.log("JS Error", e); }
+            
+            // Salva nel database
+            fetch(`${WEB_APP_URL}?action=saveNewCode&css=${encodeURIComponent(cacheCodice.css)}&js=${encodeURIComponent(cacheCodice.js)}&desc=AI Modifica`)
+            .then(() => alert("Sistema Aggiornato!"));
         }
     </script>
 </body>
