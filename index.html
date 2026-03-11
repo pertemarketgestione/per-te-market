@@ -11,59 +11,87 @@
         :root { --primary: #0F172A; --secondary: #D4AF37; --accent: #F8FAFC; }
         body, html { margin: 0; padding: 0; background: var(--primary); font-family: 'Segoe UI', sans-serif; color: var(--accent); overflow: hidden; height: 100%; }
 
-        /* --- ICONE INTEGRATE (BASE64) --- */
-        .icon-ptm { width: 24px; height: 24px; background-color: var(--secondary); display: inline-block; mask-repeat: no-repeat; -webkit-mask-repeat: no-repeat; mask-size: contain; -webkit-mask-size: contain; }
-        .i-home { -webkit-mask-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZD0iTTEwIDIwdjZoNHYtNmgydjZoM3YtOWwtOS05LTkgOXY5aDN2LTZoNHoiLz48L3N2Zz4="); }
-        .i-gift { -webkit-mask-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZD0iTTE4IDhoLTVWMmgtMnY2SDZ2MTNoMTJWOHptLTUtNGgydjJoLTJWNHpNNyAxMGg0djNoLTR2LTN6bTYgMGg0djNoLTR2LTN6bS02IDVoNHYzaC00di0zem02IDBoNHYzaC00di0zeiIvPjwvc3ZnPg=="); }
-        .i-card { -webkit-mask-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZD0iTTIgNGg0djE2SDJWMHptNiAwaDJ2MTZIOFYwem00IDBoNHYxN2gtNFYwem02IDBoNHYxN2gtNFYweiIvPjwvc3ZnPg=="); }
-        .i-cart { -webkit-mask-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZD0iTTcgMThjLTEuMSAwLTEuOTkuOS0xLjk5IDJTMTEuOSA0IDIgMTFzLTkgMi05LTJoMTNsMy42LTdoLTQuMjdMMi4xIDNoLTJWNWgybDMuNiA3LjU5LTEuMzUgMi40NWMtLjE2LjI4LS4yNS42MS0uMjUuOTYgMCAxLjEgOSAyIDIgMmgxMnYtMmgtMTIuNDRjLS4xNCAwLS4yNS0uMTEtLjI1LS4yNSAwLS4wMy4wMS0uMDYuMDItLjA5TDUuNyAxMmgxMi41NWguNzVjLjc1IDAgMS40MS0uNDEgMS43NS0xLjAzbDMuNTgtNi40OWMuMDgtLjE0LjEyLS4zMS4xMi0uNDggMC0uNTUtLjQ1LTEtMS0xaC0xNC44NXoiLz48L3N2Zz4="); }
-        .i-user { -webkit-mask-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZD0iTTEyIDEyYy0yLjIxIDAtNC0xLjc5LTQtNHMxLjc5LTQgNC00IDQgMS43OSA0IDQtMS43OSA0LTQgNHptMCAyYzIuNjcgMCA4IDEuMzMgOCA0djJoLTE2di0yYzAtMi42NyA1LjMzLTQgOC00eiIvPjwvc3ZnPg=="); }
+        /* --- STILE ICONE PER BRAVE --- */
+        .nav-btn svg { width: 24px; height: 24px; fill: #64748b; transition: 0.3s; margin-bottom: 4px; }
+        .nav-btn.active svg { fill: var(--secondary); }
+        .center-btn svg { fill: var(--primary) !important; width: 30px; height: 30px; }
 
-        /* --- DASHBOARD & LOGIN --- */
-        #splash { position: fixed; top:0; left:0; width:100%; height:100%; background: var(--primary); display: flex; justify-content: center; align-items: center; z-index: 10000; transition: 0.5s; }
+        /* --- SPLASH SCREEN --- */
+        #splash { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--primary); display: flex; justify-content: center; align-items: center; z-index: 10000; transition: 0.5s; }
         .logo-ptm { width: 80px; height: 80px; border: 2px solid var(--secondary); border-radius: 20px; animation: pulse 2s infinite; }
         @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
-        #login-page { height: 100vh; display: none; flex-direction: column; justify-content: center; align-items: center; padding: 20px; }
-        .glass-box { background: rgba(255,255,255,0.03); backdrop-filter: blur(15px); border-radius: 30px; padding: 30px; border: 1px solid rgba(212,175,55,0.15); width: 100%; max-width: 350px; text-align: center; }
-        input { width: 100%; padding: 15px; margin: 10px 0; background: #1e293b; border: 1px solid rgba(212,175,55,0.3); border-radius: 12px; color: white; box-sizing: border-box; }
+
+        /* --- LOGIN --- */
+        #login-page { height: 100vh; display: none; flex-direction: column; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; }
+        .glass-box { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(15px); border-radius: 30px; padding: 30px; border: 1px solid rgba(212, 175, 55, 0.15); width: 100%; max-width: 350px; text-align: center; }
+        input { width: 100%; padding: 15px; margin: 10px 0; background: #1e293b; border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 12px; color: white; box-sizing: border-box; }
         .btn-gold { background: var(--secondary); color: var(--primary); border: none; padding: 16px; width: 100%; border-radius: 50px; font-weight: bold; cursor: pointer; }
-        #main-app { display: none; padding: 20px; height: 100vh; overflow-y: auto; padding-bottom: 120px; }
-        .fidelity-card { background: linear-gradient(135deg, #1e293b, #0F172A); border: 1px solid var(--secondary); border-radius: 25px; padding: 25px; position: relative; }
-        .points-val { font-size: 3rem; color: var(--secondary); font-weight: 800; text-align: center; margin: 15px 0; }
-        .nav-bar { position: fixed; bottom: 0; left: 0; width: 100%; height: 75px; background: rgba(15, 23, 42, 0.98); border-top: 1px solid rgba(212, 175, 55, 0.3); display: flex; justify-content: space-around; align-items: center; }
-        .nav-btn { color: #64748b; font-size: 10px; display: flex; flex-direction: column; align-items: center; cursor: pointer; background: none; border: none; }
-        .nav-btn.active { color: var(--secondary); }
-        .nav-btn.active .icon-ptm { background-color: var(--secondary); }
-        .center-btn { width: 55px; height: 55px; background: var(--secondary); border-radius: 50%; margin-top: -40px; border: 4px solid var(--primary); display: flex; align-items: center; justify-content: center; }
-        .center-btn .icon-ptm { background-color: var(--primary) !important; }
+
+        /* --- DASHBOARD --- */
+        #main-app { display: none; padding: 20px; height: 100vh; overflow-y: auto; padding-bottom: 120px; box-sizing: border-box; }
+        .fidelity-card { background: linear-gradient(135deg, #1e293b, #0F172A); border: 1px solid var(--secondary); border-radius: 25px; padding: 25px; box-shadow: 0 15px 35px rgba(0,0,0,0.6); cursor: pointer; }
+        .points-val { font-size: 3.5rem; color: var(--secondary); font-weight: 800; text-align: center; margin: 15px 0; }
+
+        /* --- OVERLAY BARCODE --- */
         #barcode-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 20000; display: none; flex-direction: column; justify-content: center; align-items: center; }
+        #ean-svg { width: 80%; max-height: 250px; }
+
+        /* --- NAV BAR --- */
+        .nav-bar { position: fixed; bottom: 0; left: 0; width: 100%; height: 75px; background: rgba(15, 23, 42, 0.98); backdrop-filter: blur(10px); border-top: 1px solid rgba(212, 175, 55, 0.3); display: flex; justify-content: space-around; align-items: center; z-index: 5000; }
+        .nav-btn { color: #64748b; font-size: 10px; display: flex; flex-direction: column; align-items: center; cursor: pointer; background: none; border: none; outline: none; }
+        .nav-btn.active { color: var(--secondary); }
+        .center-btn { width: 55px; height: 55px; background: var(--secondary); border-radius: 50%; margin-top: -40px; border: 4px solid var(--primary); display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3); }
     </style>
 </head>
 <body>
+
     <div id="splash"><div class="logo-ptm"></div></div>
+
     <div id="login-page">
         <div class="glass-box">
-            <h2 style="color: var(--secondary);">Area Clienti</h2>
+            <h2 style="color: var(--secondary); margin-bottom: 20px;">Area Clienti</h2>
             <input type="text" id="user" placeholder="User ID">
             <input type="password" id="pass" placeholder="Password">
             <button class="btn-gold" onclick="tentaLogin()">ENTRA NEL CAVEAU</button>
         </div>
     </div>
+
     <div id="main-app">
         <div class="fidelity-card" onclick="mostraBarcode()">
-            <div style="font-size: 11px; color: var(--secondary);">CARTA PER TE</div>
+            <div style="font-size: 11px; color: var(--secondary); letter-spacing: 2px;">CARTA PER TE</div>
             <div class="points-val" id="display-punti">0</div>
-            <div style="font-size: 10px; text-align: right; opacity: 0.6;" id="display-id">ID: ---</div>
+            <div style="font-size: 10px; text-align: right; opacity: 0.6;" id="display-id">ID: 8000000000000</div>
         </div>
+        <!-- Qui verranno iniettati i moduli IA -->
     </div>
-    <div id="barcode-overlay" onclick="this.style.display='none'"><svg id="ean-svg"></svg></div>
+
+    <div id="barcode-overlay" onclick="this.style.display='none'">
+        <p style="color: #000; font-weight: bold; margin-bottom: 20px;">SCANSIONA IN CASSA</p>
+        <svg id="ean-svg"></svg>
+    </div>
+
     <nav class="nav-bar">
-        <button class="nav-btn active"><span class="icon-ptm i-home"></span><br>HOME</button>
-        <button class="nav-btn"><span class="icon-ptm i-gift"></span><br>PREMI</button>
-        <button class="nav-btn center-btn" onclick="mostraBarcode()"><span class="icon-ptm i-card"></span></button>
-        <button class="nav-btn"><span class="icon-ptm i-cart"></span><br>SPESA</button>
-        <button class="nav-btn"><span class="icon-ptm i-user"></span><br>PROFILO</button>
+        <button class="nav-btn active">
+            <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+            <span>HOME</span>
+        </button>
+        <button class="nav-btn">
+            <svg viewBox="0 0 24 24"><path d="M20 6h-2.18c.11-.31.18-.65.18-1 0-1.66-1.34-3-3-3-1.05 0-1.96.54-2.5 1.35l-.5.65-.5-.65C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-5-2c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM9 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm11 15H4V8h16v11z"/></svg>
+            <span>PREMI</span>
+        </button>
+        <button class="nav-btn center-btn" onclick="mostraBarcode()">
+            <svg viewBox="0 0 24 24"><path d="M2 4h2v16H2V4zm4 0h1v16H6V4zm3 0h3v16H9V4zm5 0h2v16h-2V4zm3 0h1v16h-1V4zm3 0h2v16h-2V4z"/></svg>
+        </button>
+        <button class="nav-btn">
+            <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
+            <span>LISTA</span>
+        </button>
+        <button class="nav-btn">
+            <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.33-8 4v2h16v-2c0-2.67-5.33-4-8-4z"/></svg>
+            <span>PROFILO</span>
+        </button>
     </nav>
+
     <script>
         const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwMgKbps8Df21dUXSZ_88OobYaYr-SvSjsfJuCZP1ufmKu5DcJ7TW7_yB2jmV5VHt8M3A/exec";
         let datiCorrenti = null;
@@ -87,8 +115,9 @@
                     document.getElementById('display-punti').innerText = data.punti;
                     document.getElementById('display-id').innerText = "ID: " + data.idCarta;
                 } else { alert(data.message); }
-            });
+            }).catch(() => { document.getElementById('splash').style.display = 'none'; alert("Errore di connessione."); });
         }
+
         function mostraBarcode() {
             if(!datiCorrenti) return;
             document.getElementById('barcode-overlay').style.display = 'flex';
