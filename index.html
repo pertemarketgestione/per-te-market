@@ -173,6 +173,7 @@
         function chiudiBarcode() {
             document.getElementById('barcode-overlay').style.display = 'none';
         }
+        if ('serviceWorker' in navigator) { navigator.serviceWorker.register('sw.js'); }
     </script>
 </body>
 </html>
