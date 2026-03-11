@@ -5,42 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#D4AF37">
-    <title>Per Te Market</title>
+    <title>Per Te Market - Admin AI</title>
     <script src="https://cdn.jsdelivr.net"></script>
     <style>
         :root { --primary: #0F172A; --secondary: #D4AF37; --accent: #F8FAFC; }
-        body, html { margin: 0; padding: 0; background: var(--primary); font-family: 'Segoe UI', sans-serif; color: var(--accent); overflow: hidden; height: 100%; }
+        body, html { margin: 0; padding: 0; background: var(--primary); font-family: 'Segoe UI', sans-serif; color: var(--accent); overflow-x: hidden; height: 100%; }
 
-        /* --- ICONE SVG INLINE (COMPATIBILI BRAVE) --- */
+        /* --- STILE ICONE --- */
         .nav-btn svg { width: 24px; height: 24px; fill: #64748b; transition: 0.3s; margin-bottom: 4px; }
         .nav-btn.active svg { fill: var(--secondary); }
         .center-btn svg { fill: var(--primary) !important; width: 30px; height: 30px; }
 
-        /* --- SPLASH SCREEN --- */
+        /* --- UI COMPONENTS --- */
         #splash { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--primary); display: flex; justify-content: center; align-items: center; z-index: 10000; transition: 0.5s; }
         .logo-ptm { width: 80px; height: 80px; border: 2px solid var(--secondary); border-radius: 20px; animation: pulse 2s infinite; }
         @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
-
-        /* --- LOGIN --- */
+        
         #login-page { height: 100vh; display: none; flex-direction: column; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; }
-        .glass-box { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(15px); border-radius: 30px; padding: 35px; border: 1px solid rgba(212, 175, 55, 0.15); width: 100%; max-width: 350px; text-align: center; }
-        input { width: 100%; padding: 15px; margin: 10px 0; background: #1e293b; border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 12px; color: white; box-sizing: border-box; outline: none; }
-        .btn-gold { background: var(--secondary); color: var(--primary); border: none; padding: 16px; width: 100%; border-radius: 50px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        .glass-box { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(15px); border-radius: 30px; padding: 30px; border: 1px solid rgba(212, 175, 55, 0.15); width: 100%; max-width: 350px; text-align: center; }
+        input, select { width: 100%; padding: 12px; margin: 8px 0; background: #1e293b; border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 10px; color: white; box-sizing: border-box; font-size: 14px; }
+        .btn-gold { background: var(--secondary); color: var(--primary); border: none; padding: 14px; width: 100%; border-radius: 50px; font-weight: bold; cursor: pointer; margin-top: 10px; }
 
-        /* --- DASHBOARD --- */
         #main-app { display: none; padding: 20px; height: 100vh; overflow-y: auto; padding-bottom: 120px; box-sizing: border-box; }
-        .fidelity-card { background: linear-gradient(135deg, #1e293b, #0F172A); border: 1px solid var(--secondary); border-radius: 25px; padding: 25px; box-shadow: 0 15px 35px rgba(0,0,0,0.6); cursor: pointer; }
-        .points-val { font-size: 3.5rem; color: var(--secondary); font-weight: 800; text-align: center; margin: 15px 0; }
+        .fidelity-card { background: linear-gradient(135deg, #1e293b, #0F172A); border: 1px solid var(--secondary); border-radius: 25px; padding: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.6); margin-bottom: 20px; }
+        
+        /* --- AI CHAT INTERFACE --- */
+        .ai-panel { background: rgba(255,255,255,0.05); border-radius: 20px; border: 1px solid var(--secondary); padding: 15px; margin-top: 20px; }
+        .chat-box { height: 180px; overflow-y: auto; background: rgba(0,0,0,0.2); border-radius: 10px; padding: 10px; font-size: 13px; margin-bottom: 10px; border: 1px solid rgba(255,255,255,0.1); }
+        .msg-ia { color: var(--secondary); margin-bottom: 8px; }
+        .msg-me { color: white; text-align: right; margin-bottom: 8px; font-style: italic; }
 
-        /* --- BARCODE OVERLAY --- */
-        #barcode-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 20000; display: none; flex-direction: column; justify-content: center; align-items: center; }
-        #ean-svg { width: 85%; max-height: 250px; }
-
-        /* --- NAV BAR --- */
         .nav-bar { position: fixed; bottom: 0; left: 0; width: 100%; height: 75px; background: rgba(15, 23, 42, 0.98); border-top: 1px solid rgba(212, 175, 55, 0.3); display: flex; justify-content: space-around; align-items: center; z-index: 5000; }
-        .nav-btn { color: #64748b; font-size: 10px; display: flex; flex-direction: column; align-items: center; cursor: pointer; background: none; border: none; outline: none; }
+        .nav-btn { color: #64748b; font-size: 10px; display: flex; flex-direction: column; align-items: center; cursor: pointer; background: none; border: none; }
         .nav-btn.active { color: var(--secondary); }
-        .center-btn { width: 55px; height: 55px; background: var(--secondary); border-radius: 50%; margin-top: -40px; border: 4px solid var(--primary); display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3); }
     </style>
 </head>
 <body>
@@ -49,96 +46,88 @@
 
     <div id="login-page">
         <div class="glass-box">
-            <h2 style="color: var(--secondary); margin-bottom: 20px; letter-spacing: 1px;">Area Clienti</h2>
+            <h2 style="color: var(--secondary);">Area Admin</h2>
             <input type="text" id="user" placeholder="User ID">
             <input type="password" id="pass" placeholder="Password">
-            <button class="btn-gold" onclick="tentaLogin()">ENTRA NEL CAVEAU</button>
+            <button class="btn-gold" onclick="tentaLogin()">ACCEDI AL CAVEAU</button>
         </div>
     </div>
 
     <div id="main-app">
-        <div class="fidelity-card" onclick="mostraBarcode()">
-            <div style="font-size: 11px; color: var(--secondary); letter-spacing: 2px;">CARTA PER TE</div>
-            <div class="points-val" id="display-punti">0</div>
-            <div style="font-size: 10px; text-align: right; opacity: 0.6;" id="display-id">ID: 8000000000000</div>
+        <div class="fidelity-card">
+            <div style="font-size: 11px; color: var(--secondary); letter-spacing: 2px;">STATO SISTEMA ADMIN</div>
+            <div style="font-size: 24px; font-weight: bold; margin-top: 10px;">Benvenuto, Regia</div>
+        </div>
+
+        <!-- ⚙️ CONFIGURAZIONE IA -->
+        <div class="ai-panel">
+            <h4 style="color: var(--secondary); margin: 0 0 10px 0;">⚙️ CONFIGURAZIONE IA</h4>
+            <select id="ai-provider">
+                <option value="Google">Google (Gemini)</option>
+            </select>
+            <input type="text" id="ai-model-input" placeholder="Modello (es: AUTO o gemini-1.5-flash)">
+            <input type="password" id="ai-key-input" placeholder="Incolla API Key qui">
+            <button class="btn-gold" style="padding: 10px;" onclick="salvaAI()">AGGIORNA CONFIGURAZIONE</button>
+        </div>
+
+        <!-- 🧠 CHAT IA -->
+        <div class="ai-panel">
+            <h4 style="color: var(--secondary); margin: 0 0 10px 0;">🧠 AI MODE STRATEGICO</h4>
+            <div class="chat-box" id="chat-output">Benvenuto Admin. Configura la chiave per iniziare.</div>
+            <div style="display:flex; gap:5px;">
+                <input type="text" id="chat-query" placeholder="Chiedi strategia..." style="margin:0;">
+                <button class="btn-gold" style="width:50px; margin:0; padding:0;" onclick="chiediAI()">➤</button>
+            </div>
         </div>
     </div>
 
-    <div id="barcode-overlay" onclick="this.style.display='none'">
-        <p style="color: #000; font-weight: bold; margin-bottom: 20px; letter-spacing: 2px;">SCANSIONA IN CASSA</p>
-        <svg id="ean-svg"></svg>
-        <p style="color: #666; font-size: 11px; margin-top: 20px;">Tocca per chiudere</p>
-    </div>
-
     <nav class="nav-bar">
-        <button class="nav-btn active">
-            <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-            <span>HOME</span>
-        </button>
-        <button class="nav-btn">
-            <svg viewBox="0 0 24 24"><path d="M20 6h-2.18c.11-.31.18-.65.18-1 0-1.66-1.34-3-3-3-1.05 0-1.96.54-2.5 1.35l-.5.65-.5-.65C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-5-2c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM9 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm11 15H4V8h16v11z"/></svg>
-            <span>PREMI</span>
-        </button>
-        <button class="nav-btn center-btn" onclick="mostraBarcode()">
-            <svg viewBox="0 0 24 24"><path d="M2 4h2v16H2V4zm4 0h1v16H6V4zm3 0h3v16H9V4zm5 0h2v16h-2V4zm3 0h1v16h-1V4zm3 0h2v16h-2V4z"/></svg>
-        </button>
-        <button class="nav-btn">
-            <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-            <span>LISTA</span>
-        </button>
-        <button class="nav-btn">
-            <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.33-8 4v2h16v-2c0-2.67-5.33-4-8-4z"/></svg>
-            <span>PROFILO</span>
-        </button>
+        <button class="nav-btn active"><svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg><span>HOME</span></button>
+        <button class="nav-btn"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.33-8 4v2h16v-2c0-2.67-5.33-4-8-4z"/></svg><span>UTENTI</span></button>
+        <button class="nav-btn"><svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg><span>CONFIG</span></button>
     </nav>
 
     <script>
         const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwMgKbps8Df21dUXSZ_88OobYaYr-SvSjsfJuCZP1ufmKu5DcJ7TW7_yB2jmV5VHt8M3A/exec";
-        let datiCorrenti = null;
-
-        // REGISTRAZIONE SERVICE WORKER (FONDAMENTALE PER INSTALLAZIONE)
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('sw.js')
-                    .then(reg => console.log('SW registrato!', reg))
-                    .catch(err => console.log('Errore SW:', err));
-            });
-        }
 
         window.onload = () => {
-            setTimeout(() => {
-                document.getElementById('splash').style.opacity = '0';
-                setTimeout(() => { 
-                    document.getElementById('splash').style.display = 'none'; 
-                    document.getElementById('login-page').style.display = 'flex'; 
-                }, 500);
-            }, 1500);
+            setTimeout(() => { document.getElementById('splash').style.display = 'none'; document.getElementById('login-page').style.display = 'flex'; }, 1500);
         };
 
         function tentaLogin() {
             const user = document.getElementById('user').value;
             const pass = document.getElementById('pass').value;
-            if(!user || !pass) return;
-            document.getElementById('splash').style.display = 'flex';
-            document.getElementById('splash').style.opacity = '1';
-
             fetch(`${WEB_APP_URL}?action=login&user=${encodeURIComponent(user)}&pass=${encodeURIComponent(pass)}`)
             .then(res => res.json()).then(data => {
-                document.getElementById('splash').style.display = 'none';
                 if(data.status === "SUCCESS") {
-                    datiCorrenti = data;
                     document.getElementById('login-page').style.display = 'none';
                     document.getElementById('main-app').style.display = 'block';
-                    document.getElementById('display-punti').innerText = data.punti;
-                    document.getElementById('display-id').innerText = "ID: " + data.idCarta;
                 } else { alert(data.message); }
-            }).catch(() => { document.getElementById('splash').style.display = 'none'; alert("Errore di connessione."); });
+            });
         }
 
-        function mostraBarcode() {
-            if(!datiCorrenti) return;
-            document.getElementById('barcode-overlay').style.display = 'flex';
-            JsBarcode("#ean-svg", datiCorrenti.idCarta, { format: "EAN13", width: 3, height: 100, displayValue: true });
+        function salvaAI() {
+            const dati = {
+                provider: document.getElementById('ai-provider').value,
+                model: document.getElementById('ai-model-input').value,
+                key: document.getElementById('ai-key-input').value
+            };
+            fetch(`${WEB_APP_URL}?action=updateAIConfig&data=${JSON.stringify(dati)}`)
+            .then(res => res.json()).then(res => alert(res.message));
+        }
+
+        function chiediAI() {
+            const query = document.getElementById('chat-query').value;
+            const out = document.getElementById('chat-output');
+            if(!query) return;
+            out.innerHTML += `<div class="msg-me">IO: ${query}</div>`;
+            document.getElementById('chat-query').value = "";
+
+            fetch(`${WEB_APP_URL}?action=askAI&prompt=${encodeURIComponent(query)}`)
+            .then(res => res.json()).then(data => {
+                out.innerHTML += `<div class="msg-ia">IA: ${data.risposta}</div>`;
+                out.scrollTop = out.scrollHeight;
+            });
         }
     </script>
 </body>
